@@ -67,7 +67,7 @@ export function PromptForm({
           tabIndex={0}
           onKeyDown={onKeyDown}
           rows={1}
-          defaultValue={input}
+          value={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Send a message."
           spellCheck={false}

@@ -27,10 +27,8 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
-  const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
-    'ai-token',
-    null
-  )
+  const [previewToken, setPreviewToken] = useLocalStorage<string | null>('ai-token',null)
+  const [app, setApp] = useLocalStorage<string | null>('ai-endpoint',null)
   const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
   const { messages, append, reload, stop, isLoading, input, setInput } =
@@ -42,6 +40,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         previewToken
       }
     })
+  const setFunApp = (name: string) => setApp(name)
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -53,6 +52,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         ) : (
           <EmptyScreen setInput={setInput} />
         )}
+        <div className='absolute top-1 right-2 flex flex-row'>
+          {app}
+          <button className='mx-1 border text-black border-gray-400 rounded-2xl bg-slate-50 py-3 px-4' onClick={()=>setApp('hr')}>HF</button>
+          <button className='mx-1 border text-black border-gray-400 rounded-2xl bg-slate-50 py-3 px-4' onClick={()=>setApp('openai')}>OpenAI</button>
+        </div>
       </div>
       <ChatPanel
         id={id}
