@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+// import { v4 as uuid } from "uuid";
 import NextAuth from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 
@@ -21,7 +21,7 @@ export const {
       profile.image = '/public/favicon.ico';
       token = localStorage.getItem('optoken')
       if(token == ""){
-        const mytoken =  uuid()
+        const mytoken =  (process.env.NEXTAUTH_SECRET??'')?.toString()
         localStorage.setItem('optoken', mytoken)
         token = mytoken
       }
