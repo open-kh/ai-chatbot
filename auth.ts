@@ -33,7 +33,7 @@ export const {
     },
     // @TODO
     authorized() {
-      return true;
+      // return true;
       return {
         id: 1,
         name: 'Open Brain',
