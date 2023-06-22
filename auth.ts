@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import NextAuth from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 
@@ -8,22 +9,44 @@ export const {
   // @ts-ignore
 } = NextAuth({
   // @ts-ignore
-  providers: [GitHub],
+  providers: [
+    GitHub
+  ],
   callbacks: {
     // @ts-ignore
     jwt: async ({ token, profile }) => {
+      profile.id = 1;
+      profile.name = 'Open Brain';
+      profile.email = 'openbrain@gmail.com';
+      profile.image = '/public/favicon.ico';
+      token = localStorage.getItem('optoken')
+      if(token == ""){
+        const mytoken =  uuid()
+        localStorage.setItem('optoken', mytoken)
+        token = mytoken
+      }
       if (profile?.id) {
         token.id = profile.id
         token.image = profile.picture
       }
-      return token
-    }
+      return token;
+    },
     // @TODO
     // authorized({ request, auth }) {
-    //   return !!auth?.user
+      // if(request.user.id === auth.user.id) {
+      //   return {
+      //     id: 1,
+      //     name: 'Open Brain',
+      //     email: 'openbrain@gmail.com',
+      //     image: '/public/favicon.ico'
+      //   };
+      // }
     // }
+    authorized() {
+      return true // If there is a token, the user is authenticated
+    }
   },
   pages: {
-    signIn: '/sign-in'
+    signIn: '/sign-in',
   }
 })

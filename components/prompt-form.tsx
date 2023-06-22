@@ -41,12 +41,12 @@ export function PromptForm({
         if (input === '') {
           return
         }
-        setInput('')
         await onSubmit(input)
+        setInput('')
       }}
       ref={formRef}
     >
-      <div className="relative flex w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
+      <div className="relative flex w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-2xl sm:border sm:px-12">
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
@@ -67,7 +67,7 @@ export function PromptForm({
           tabIndex={0}
           onKeyDown={onKeyDown}
           rows={1}
-          value={input}
+          defaultValue={input}
           onChange={e => setInput(e.target.value)}
           placeholder="Send a message."
           spellCheck={false}

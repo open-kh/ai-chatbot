@@ -1,66 +1,49 @@
-import { kv } from '@vercel/kv'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { Configuration, OpenAIApi } from 'openai-edge'
+import { HfInference } from '@huggingface/inference'
+import { HuggingFaceStream, StreamingTextResponse } from 'ai'
 
-import { auth } from '@/auth'
-import { nanoid } from '@/lib/utils'
+// Create a new HuggingFace Inference instance
+const Hf = new HfInference(process.env.HUGGINGFACE_API_KEY)
 
+// IMPORTANT! Set the runtime to edge
 export const runtime = 'edge'
 
-export async function POST(req: Request) {
-  const json = await req.json()
-  const { messages, previewToken } = json
-  const session = await auth()
-
-  if (process.env.VERCEL_ENV !== 'preview') {
-    if (session == null) {
-      return new Response('Unauthorized', { status: 401 })
-    }
-  }
-
-  const configuration = new Configuration({
-    apiKey: previewToken || process.env.OPENAI_API_KEY
-  })
-
-  const openai = new OpenAIApi(configuration)
-
-  const res = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages,
-    temperature: 0.7,
-    stream: true
-  })
-
-  const stream = OpenAIStream(res, {
-    async onCompletion(completion) {
-      const title = json.messages[0].content.substring(0, 100)
-      const userId = session?.user.id
-      if (userId) {
-        const id = json.id ?? nanoid()
-        const createdAt = Date.now()
-        const path = `/chat/${id}`
-        const payload = {
-          id,
-          title,
-          userId,
-          createdAt,
-          path,
-          messages: [
-            ...messages,
-            {
-              content: completion,
-              role: 'assistant'
-            }
-          ]
+// Build a prompt from the messages
+function buildPompt(
+  messages: { content: string; role: 'system' | 'user' | 'assistant' }[]
+) {
+  return (
+    messages
+      .map(({ content, role }) => {
+        if (role === 'user') {
+          return `<|prompter|>${content}<|endoftext|>`
+        } else {
+          return `<|assistant|>${content}<|endoftext|>`
         }
-        await kv.hmset(`chat:${id}`, payload)
-        await kv.zadd(`user:chat:${userId}`, {
-          score: createdAt,
-          member: `chat:${id}`
-        })
-      }
+      })
+      .join('') + '<|assistant|>'
+  )
+}
+
+export async function POST(req: Request) {
+  // Extract the `messages` from the body of the request
+  const { messages } = await req.json()
+
+  const response = await Hf.textGenerationStream({
+    model: 'OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5',
+    inputs: buildPompt(messages),
+    parameters: {
+      max_new_tokens: 200,
+      // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
+      typical_p: 0.2,
+      repetition_penalty: 1,
+      truncate: 1000,
+      return_full_text: false
     }
   })
 
+  // Convert the response into a friendly text-stream
+  const stream = HuggingFaceStream(response)
+
+  // Respond with the stream
   return new StreamingTextResponse(stream)
 }

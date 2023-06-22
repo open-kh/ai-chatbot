@@ -18,6 +18,14 @@ export async function generateMetadata({
   params
 }: ChatPageProps): Promise<Metadata> {
   const session = await auth()
+  // const session = {
+  //   user: {
+  //     id: 1,
+  //     name: 'Open Brain',
+  //     email: 'openbrain@gmail.com',
+  //     image: '/public/favicon.ico'
+  //   }
+  // };
 
   if (!session?.user) {
     return {}
