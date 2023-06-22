@@ -32,19 +32,20 @@ export const {
       return token;
     },
     // @TODO
-    // authorized({ request, auth }) {
-      // if(request.user.id === auth.user.id) {
-      //   return {
-      //     id: 1,
-      //     name: 'Open Brain',
-      //     email: 'openbrain@gmail.com',
-      //     image: '/public/favicon.ico'
-      //   };
-      // }
-    // }
     authorized() {
-      return true // If there is a token, the user is authenticated
+      return true;
+      return {
+        id: 1,
+        name: 'Open Brain',
+        email: 'openbrain@gmail.com',
+        image: '/public/favicon.ico',
+      };
+      // if(request.user.id === auth.user.id) {
+      // }
     }
+    // authorized() {
+    //   return true // If there is a token, the user is authenticated
+    // }
   },
   pages: {
     signIn: '/sign-in',
