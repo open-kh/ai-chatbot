@@ -1,7 +1,7 @@
 // import { v4 as uuid } from "uuid";
 // import GitHub from 'next-auth/providers/github'
 import NextAuth from 'next-auth'
-import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials"
 import { NextResponse } from 'next/server';
 
 const backendURL = process.env.NEXTAUTH_URL??"http://openkh.org"
@@ -19,18 +19,24 @@ async function getUser(credentialDetails: any){
 }
 
 export const authOptions = {
+    pages: {
+        signIn: "/sign-in",
+    },
     session: {
         strategy: "jwt",
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
+    trustHost: true,
     providers: [
-        CredentialsProvider({
+        Credentials({
+            name: "SignIn",
             type: "credentials",
             credentials: {
                 name: { label: "Username", type: "text" },
                 email: { label: "Email", type: "email"},
-                password: { label: "Password", type: "password", placeholder: "Password defaults 123456"},
+                password: { label: "Password", value: 123456, type: "password", placeholder: "Password defaults 123456"},
             },
+            // redirect: false,
             async authorize(credentials) {
                 const credentialDetails = {
                     email: credentials.email,
@@ -63,10 +69,7 @@ export const authOptions = {
                 token.email = user.email;
                 token.name = user.name;
                 token.id = user.id;
-                // token.user_type = user.userType;
-                // token.accessToken = user.token;
             }
-
             return token;
         },
         // @ts-ignore
@@ -75,10 +78,16 @@ export const authOptions = {
                 session.user.email = token.email;
                 session.user.name = token.name;
                 session.user.id = token.id;
-                // session.user.accessToken = token.accessToken;
             }
             return session;
         },
+        // @ts-ignore
+        // redirect: async (url, baseUrl) => {
+        //     return await Promise.resolve(process.env.REDIRECT_URL);
+        //     return url.startsWith(baseUrl)
+        //     ? Promise.resolve(url)
+        //     : Promise.resolve(baseUrl)
+        // }
     },
 };
 

@@ -42,10 +42,10 @@ export function UserMenu({ user }: UserMenuProps) {
             <span className="ml-2">{user?.name}</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent sideOffset={8} align="start" className="w-[180px]">
+        <DropdownMenuContent sideOffset={8} align="start" className="w-auto">
           <DropdownMenuItem className="flex-col items-start">
             <div className="text-xs font-medium">{user?.name}</div>
-            <div className="text-xs text-zinc-500">{user?.email}</div>
+            <code className="text-xs text-zinc-500">{user?.email}</code>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
