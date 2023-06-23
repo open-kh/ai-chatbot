@@ -2,8 +2,21 @@
 // import GitHub from 'next-auth/providers/github'
 import NextAuth from 'next-auth'
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextResponse } from 'next/server';
 
 const backendURL = process.env.NEXTAUTH_URL??"http://openkh.org"
+
+async function getUser(credentialDetails: any){
+    let user = {
+        id: 1,
+        name: 'Open Brain',
+        email: 'openbrain@gmail.com',
+        image: '/favicon.ico',
+        password: '123456'
+    }
+    if(credentialDetails.password != 123456) return NextResponse.json({is_success: false});
+    return NextResponse.json({is_success: true,...user, ...credentialDetails,id: credentialDetails.email.replaceAll(' ','').toLowerCase()})
+}
 
 export const authOptions = {
     session: {
@@ -24,14 +37,15 @@ export const authOptions = {
                     password: credentials.password,
                     name: credentials.name,
                 };
-                const resp = await fetch(backendURL+"/api/auth/login", {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(credentialDetails),
-                });
+                // const resp = await fetch(backendURL+"/api/auth/login", {
+                //     method: "POST",
+                //     headers: {
+                //         Accept: "application/json",
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify(credentialDetails),
+                // });
+                const resp = await getUser(credentialDetails);
                 let user = await resp.json()
                 if (user.is_success) {
                     return user;
