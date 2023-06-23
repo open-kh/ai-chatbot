@@ -3,7 +3,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const backendURL = process.env.NEXTAUTH_URL
+const backendURL = process.env.NEXTAUTH_URL??"http://openkh.org"
 
 export const authOptions = {
     session: {
