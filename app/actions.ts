@@ -7,6 +7,16 @@ import { kv } from '@vercel/kv'
 import { auth } from '@/auth'
 import { type Chat } from '@/lib/types'
 
+export const uuidv4 = () =>{
+    var d = new Date().getTime() // get current timestamp in ms (to ensure UUID uniqueness)
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0 // generate random nibble
+        d = Math.floor(d/16) // correspond each UUID digit to unique 4-bit chunks of timestamp
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16) // generate random hexadecimal digit
+    })
+    return uuid
+}
+
 export async function getChats(userId?: string | null) {
   if (!userId) {
     return []

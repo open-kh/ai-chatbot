@@ -51,7 +51,7 @@ export function UserMenu({ user }: UserMenuProps) {
           <DropdownMenuItem
             onClick={() =>
               signOut({
-                callbackUrl: '/'
+                callbackUrl: process.env.NEXTAUTH_URL
               })
             }
             className="text-xs"

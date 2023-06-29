@@ -10,13 +10,13 @@ export const LoginForm = () => {
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '123456'
   })
   const [error, setError] = useState('')
 
   const searchParams = useSearchParams()
 //   const callbackUrl = searchParams.get('callbackUrl') || '/'
-  const callbackUrl = process.env.APP_LOGIN_URL || '/'
+  const callbackUrl = process.env.NEXTAUTH_URL || '/'
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,7 +62,7 @@ export const LoginForm = () => {
           required
           type="text"
           name="name"
-          value={formValues.name}
+          value={formValues.name??"Dr. Strange"}
           onChange={handleChange}
           placeholder="Username"
           className={`form-control ${input_style}`}
@@ -84,7 +84,7 @@ export const LoginForm = () => {
           required
           type="password"
           name="password"
-          value={formValues.password}
+          value={formValues.password??123456}
           onChange={handleChange}
           placeholder="Password"
           className={`form-control ${input_style}`}

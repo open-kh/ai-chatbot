@@ -41,8 +41,8 @@ export function PromptForm({
         if (input === '') {
           return
         }
-        await onSubmit(input)
         setInput('')
+        await onSubmit(input)
       }}
       ref={formRef}
     >

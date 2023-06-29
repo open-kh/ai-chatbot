@@ -4,16 +4,15 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
-import { OPENAI_KEY } from './route'
+import { OPENAI_KEY } from '../route'
 
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
     const json = await req.json()
-    const { messages, previewToken, prompt } = json
-    let { stream } = json
+    const { messages,prompt, previewToken } = json
     const session = await auth()
-    
+
     if (process.env.VERCEL_ENV !== 'preview') {
         if (session == null) {
             return new Response('Unauthorized', { status: 401 })
@@ -25,33 +24,23 @@ export async function POST(req: Request) {
     })
 
     const openai = new OpenAIApi(configuration)
-    let temperature = 0.7
 
-    const payload = {
-        model: 'text-davinci-003',
-        prompt,
-        temperature,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        max_tokens: 2048,
-        n: 1,
-      };
+      const res = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages,
+        temperature: 0.7,
+        stream: true
+      })
 
-    let res;
-    stream = stream??true;
-    if(prompt){
-        res = await openai.createCompletion(payload)
-    }else{
-        res = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo',
-            messages,
-            temperature,
-            stream
-          })
-    }
+    //   const res = await fetch(`https://api.openai.com/v1/completions`,{
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(messages)
+    //   })
 
-    const streamRes = OpenAIStream(res, {
+    const stream = OpenAIStream(res, {
         async onCompletion(completion) {
             const title = json.messages[0].content.substring(0, 100)
             const userId = session?.user.id
@@ -82,5 +71,5 @@ export async function POST(req: Request) {
         }
     })
 
-    return new StreamingTextResponse(streamRes)
+    return new StreamingTextResponse(stream)
 }
