@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from 'openai-edge'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { OPENAI_KEY } from '../route'
+import { OPENAI_KEY } from '@/app/actions'
 import { NextResponse } from 'next/server'
 
 // Create an OpenAI API client (that's edge friendly!)

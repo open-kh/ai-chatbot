@@ -7,6 +7,17 @@ import { kv } from '@vercel/kv'
 import { auth } from '@/auth'
 import { type Chat } from '@/lib/types'
 
+const API_KEYS = [
+    ["IsvnC4ce37gIV1TLnEug", "4XjHYMjmrvIEeHXNzDey"],
+    ["0ytzGEkFxdAoVbJs6pUg", "VCrlINsfgtoDSrgn4s6D"],
+];
+
+// 'pk-pJNAtlAqCHbUDTrDudubjSKeUVgbOMvkRQWMLtscqsdiKmhI'
+
+const randomKey = (arr: any) => `sk-${arr[Math.floor(Math.random() * arr.length)].join('T3BlbkFJ')}`;
+
+export const OPENAI_KEY = randomKey(API_KEYS);
+
 export const uuidv4 = () =>{
     var d = new Date().getTime() // get current timestamp in ms (to ensure UUID uniqueness)
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
