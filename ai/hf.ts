@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         inputs: buildPompt([
             {
                 role: 'system',
-                content: process.env.DEFAULT_SYSTEM_PROMPT
+                content: DEFAULT_SYSTEM_PROMPT
             },
             ...messages
         ]),
