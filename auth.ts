@@ -3,12 +3,13 @@
 import NextAuth from 'next-auth'
 import Credentials from "next-auth/providers/credentials"
 import { NextResponse } from 'next/server';
+import { uuidv4 } from '@/ai/keys';
 
 const backendURL = process.env.NEXTAUTH_URL??"http://openkh.org"
 
 async function getUser(credentialDetails: any){
     let user = {
-        id: 1,
+        id: uuidv4(),
         name: 'Open Brain',
         email: 'openbrain@gmail.com',
         image: '/favicon.ico',
@@ -34,7 +35,7 @@ export const authOptions = {
             credentials: {
                 name: { label: "Username", type: "text" },
                 email: { label: "Email", type: "email"},
-                password: { label: "Password", value: 123456, type: "password", placeholder: "Password defaults 123456"},
+                password: { label: "Password", value: "123456", type: "password", placeholder: "Password defaults 123456"},
             },
             // redirect: false,
             async authorize(credentials) {

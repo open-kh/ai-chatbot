@@ -19,6 +19,7 @@ import {
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
+import { toast } from 'react-hot-toast'
 import ChatBot from './chatbot'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
@@ -41,6 +42,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       body: {
         id,
         previewToken
+      },
+      onResponse(response) {
+        if (response.status === 401) {
+          toast.error(response.statusText)
+        }
       }
     })
   return (
