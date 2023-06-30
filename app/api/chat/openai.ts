@@ -4,7 +4,7 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
-import { OPENAI_KEY } from './route'
+import { OPENAI_KEY } from '@/app/actions'
 
 export const runtime = 'edge'
 
