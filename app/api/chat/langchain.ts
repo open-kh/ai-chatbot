@@ -1,8 +1,8 @@
+import { OPENAI_KEY } from '@/app/actions';
 import { auth } from '@/auth';
 import { StreamingTextResponse, LangChainStream, Message } from 'ai'
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { AIChatMessage, HumanChatMessage } from 'langchain/schema'
-import { OPENAI_KEY } from './route';
 
 export const runtime = 'edge'
 
