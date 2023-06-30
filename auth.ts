@@ -20,7 +20,7 @@ async function getUser(credentialDetails: any){
 
 export const authOptions = {
     pages: {
-        signIn: "/sign-in",
+        signIn: '/sign-in'
     },
     session: {
         strategy: "jwt",

@@ -1,4 +1,4 @@
-import { OPENAI_KEY } from '@/app/actions';
+import { OPENAI_KEY_GEN } from '@/app/actions';
 import { auth } from '@/auth';
 import { StreamingTextResponse, LangChainStream, Message } from 'ai'
 import { ChatOpenAI } from 'langchain/chat_models/openai'
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     const llm = new ChatOpenAI({
         streaming: true,
-        openAIApiKey: process.env.OPENAI_API_KEY??OPENAI_KEY,
+        openAIApiKey: process.env.OPENAI_API_KEY??OPENAI_KEY_GEN,
         // maxTokens: 1024,
         callbacks: [handlers]
     })

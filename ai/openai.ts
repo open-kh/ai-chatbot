@@ -4,7 +4,7 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
-import { OPENAI_KEY } from '@/app/actions'
+import { OPENAI_KEY_GEN } from '@/app/actions'
 
 export const runtime = 'edge'
 
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     }
 
     const configuration = new Configuration({
-        apiKey: previewToken || (process.env.OPENAI_API_KEY??OPENAI_KEY)
+        apiKey: previewToken || (process.env.OPENAI_API_KEY??OPENAI_KEY_GEN)
     })
 
     const openai = new OpenAIApi(configuration)

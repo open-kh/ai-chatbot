@@ -15,7 +15,7 @@ export const LoginForm = () => {
   const [error, setError] = useState('')
 
   const searchParams = useSearchParams()
-//   const callbackUrl = searchParams.get('callbackUrl') || '/'
+  //   const callbackUrl = searchParams.get('callbackUrl') || '/'
   const callbackUrl = process.env.NEXTAUTH_URL || '/'
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -48,10 +48,11 @@ export const LoginForm = () => {
     setFormValues({ ...formValues, [name]: value })
   }
 
-//   const input_style =
-//     'form-control block w-full px-3 py-3 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-xl transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-  const input_style = 'block shadow-sm w-full px-3 py-3 text-sm font-normal text-gray-700 bg-clip-padding border rounded-lg transition ease-in-out hover:shadow-lg focus:shadow-md'
-    
+  //   const input_style =
+  //     'form-control block w-full px-3 py-3 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-xl transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+  const input_style =
+    'block shadow-sm w-full px-3 py-3 text-sm font-normal text-gray-700 bg-clip-padding border rounded-lg transition ease-in-out hover:shadow-lg focus:shadow-md'
+
   return (
     <form onSubmit={onSubmit}>
       {error && (
@@ -62,7 +63,7 @@ export const LoginForm = () => {
           required
           type="text"
           name="name"
-          value={formValues.name??"Dr. Strange"}
+          value={formValues.name ?? 'Dr. Strange'}
           onChange={handleChange}
           placeholder="Username"
           className={`form-control ${input_style}`}
@@ -84,7 +85,7 @@ export const LoginForm = () => {
           required
           type="password"
           name="password"
-          value={formValues.password??123456}
+          value={formValues.password ?? 123456}
           onChange={handleChange}
           placeholder="Password"
           className={`form-control ${input_style}`}
@@ -92,7 +93,9 @@ export const LoginForm = () => {
       </div>
       <button
         type="submit"
-        className={`shadow-sm px-3 py-3 text-sm border border-gray-200 rounded-lg uppercase inline-block hover:shadow-lg transition duration-150 ease-in-out w-full text-white-700 ${loading ? ' bg-slate-300 text-gray' : 'bg-slate-700 text-white'}`}
+        className={`shadow-sm px-3 py-3 text-sm border border-gray-200 rounded-lg uppercase inline-block hover:shadow-lg transition duration-150 ease-in-out w-full text-white-700 ${
+          loading ? ' bg-slate-300 text-gray' : 'bg-slate-700 text-white'
+        }`}
         disabled={loading}
       >
         {loading ? 'loading...' : 'Sign In'}

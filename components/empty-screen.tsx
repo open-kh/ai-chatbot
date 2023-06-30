@@ -23,10 +23,10 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
   return (
     <div className="mx-auto max-w-2xl px-4 text-center align-middle">
       <div className="rounded-2xl border bg-background p-8">
-        <h1 className="mb-2 text-lg font-semibold">
-          Welcome to AI Chatbot!
-        </h1>
-        <p><span className='text-red'>NOTE:</span> Free chat, no control</p>
+        <h1 className="mb-2 text-lg font-semibold">Welcome to AI Chatbot!</h1>
+        <p>
+          <span className="text-red">NOTE:</span> Free chat, no control
+        </p>
       </div>
     </div>
   )

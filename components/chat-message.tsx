@@ -13,7 +13,7 @@ export interface ChatMessageProps {
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
-//   message.content = message.content.replaceAll('Open Assistant', 'OpenBrain').replaceAll('OpenAssistant', 'OpenBrain')
+  //   message.content = message.content.replaceAll('Open Assistant', 'OpenBrain').replaceAll('OpenAssistant', 'OpenBrain')
   return (
     <div
       className={cn('group relative mb-4 flex items-start md:-ml-12')}

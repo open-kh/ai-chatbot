@@ -6,6 +6,6 @@ export const runtime = 'edge'
 
 export default function IndexPage() {
   const id = nanoid()
-//   return <ChatCompletion />
+  //   return <ChatCompletion />
   return <Chat id={id} />
 }
