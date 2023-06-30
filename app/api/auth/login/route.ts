@@ -37,7 +37,7 @@ export async function GET(req: Request) {
     const res = await req.url.split('?')[1].split('&');
     for (const key in res) {
         const i = res[key].split('=');
-        data[i[0]] = i[1];
+        eval(`data.${i[0]} = ${i[1]}`);
     }
     if(data.email.toLowerCase().split("@")[1]!='itc.edu.kh') return;
     const user = {
