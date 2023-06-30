@@ -4,7 +4,7 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
-import { OPENAI_KEY_GEN } from '@/app/actions'
+import { OPENAI_KEY_GEN } from './keys'
 
 export const runtime = 'edge'
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     const streamRes = OpenAIStream(res, {
         async onCompletion(completion) {
             const title = json.messages[0].content.substring(0, 100)
-            const userId = session?.user.id
+            const userId = session?.user?.email
             if (userId) {
                 const id = json.id ?? nanoid()
                 const createdAt = Date.now()

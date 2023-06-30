@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     const stream = HuggingFaceStream(response, {
         async onCompletion(completion) {
             const title = json.messages[0].content.substring(0, 100)
-            const userId = session?.user.id
+            const userId = session?.user?.email
             if (userId) {
                 const id = json.id ?? nanoid()
                 const createdAt = Date.now()

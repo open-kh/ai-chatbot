@@ -33,29 +33,3 @@ export async function POST(req: NextRequest) {
     id: data.email.replaceAll(' ', '').toLowerCase()
   })
 }
-export async function GET(req: Request) {
-  // const data1 = await req.headers
-  let data: { name: string; email: string } = {
-    name: '',
-    email: ''
-  }
-  const res = await req.url.split('?')[1].split('&')
-  for (const key in res) {
-    const i = res[key].split('=')
-    eval(`data.${i[0]} = ${i[1]}`)
-  }
-  if (data.email.toLowerCase().split('@')[1] != 'itc.edu.kh') return
-  const user = {
-    id: nanoid(),
-    name: 'Open Brain',
-    email: 'openbrain@itc.edu.kh',
-    image: '/favicon.ico'
-  }
-  const callbackUrl = process.env.NEXTAUTH_URL || '/'
-  return await signIn('credentials', {
-    redirect: false,
-    ...user,
-    ...data,
-    callbackUrl
-  })
-}

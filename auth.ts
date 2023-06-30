@@ -9,7 +9,7 @@ const backendURL = process.env.NEXTAUTH_URL??"http://openkh.org"
 
 async function getUser(credentialDetails: any){
     let user = {
-        id: uuidv4(),
+        id: 1,
         name: 'Open Brain',
         email: 'openbrain@gmail.com',
         image: '/favicon.ico',
@@ -25,7 +25,7 @@ export const authOptions = {
     },
     session: {
         strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 7 * 24 * 60 * 60, // 7 days
     },
     trustHost: true,
     providers: [
@@ -74,7 +74,7 @@ export const authOptions = {
             return token;
         },
         // @ts-ignore
-        session: ({ session, token, user }) => {
+        session: async ({ session, token, user }) => {
             if (token) {
                 session.user.email = token.email;
                 session.user.name = token.name;
