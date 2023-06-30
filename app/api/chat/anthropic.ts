@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY
+      'x-api-key': process.env.ANTHROPIC_API_KEY || '',
     },
     body: JSON.stringify({
       prompt: buildPrompt(messages),
